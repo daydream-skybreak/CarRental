@@ -1,3 +1,6 @@
+using CarRental.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables from .env
@@ -18,6 +21,8 @@ builder.Configuration["ConnectionStrings:DefaultConnection"] = postgresConnectio
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
 var app = builder.Build();
 

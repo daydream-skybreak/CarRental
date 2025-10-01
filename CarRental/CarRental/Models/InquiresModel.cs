@@ -7,4 +7,5 @@ public class InquiresModel
     public required string Message { get; set; }
     public int UserId { get; set; } // User who made the inquiry
     public UserModel User { get; set; }
+    public CarModel Car { get; set; }
 }

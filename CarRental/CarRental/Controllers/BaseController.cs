@@ -1,18 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using CarRental.Services;
 using System.Linq;
-using CarRental.Models;
 
 namespace CarRental.Controllers
 {
     public class BaseController : Controller
     {
+        protected AppDbContext _context;
+
+        public BaseController(AppDbContext context = null)
+        {
+            _context = context;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId.HasValue)
+            if (userId.HasValue && _context != null)
             {
-                var user = InquiriesController.users.FirstOrDefault(u => u.Id == userId.Value);
+                var user = _context.Users.FirstOrDefault(u => u.Id == userId.Value);
                 if (user != null)
                 {
                     ViewBag.UserName = user.Name;

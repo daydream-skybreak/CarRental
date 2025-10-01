@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarRental.Models;
+using CarRental.Services;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Controllers
 {
     public class AccountController : BaseController
     {
-        // Use the static users list from InquiriesController for demo
-        private static System.Collections.Generic.List<UserModel> users = InquiriesController.users;
+        private readonly AppDbContext _context;
+
+        public AccountController(AppDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -22,9 +28,8 @@ namespace CarRental.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.Id = users.Count > 0 ? users.Max(u => u.Id) + 1 : 1;
-                users.Add(model);
-                // Auto-login after registration
+                _context.Users.Add(model);
+                _context.SaveChanges();
                 HttpContext.Session.SetInt32("UserId", model.Id);
                 return RedirectToAction("Index", "Home");
             }
@@ -39,15 +44,15 @@ namespace CarRental.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string email)
+        public IActionResult Login(string email, string password)
         {
-            var user = users.FirstOrDefault(u => u.Email == email);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
             if (user != null)
             {
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Invalid email.");
+            ModelState.AddModelError("", "Invalid email or password.");
             return View();
         }
 

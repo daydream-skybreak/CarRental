@@ -1,0 +1,35 @@
+﻿# Ignore build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.*
+
+# Logs
+*.log
+
+# Database
+*.mdf
+*.ldf
+
+# Others
+wwwroot/lib/
+
