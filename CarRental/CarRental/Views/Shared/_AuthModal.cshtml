@@ -1,0 +1,85 @@
+﻿<div class="modal fade" id="authModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Sign Up / Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center mb-3">
+          <button id="show-signup" type="button" class="btn btn-outline-primary me-2 active">Sign Up</button>
+          <button id="show-login" type="button" class="btn btn-outline-secondary">Login</button>
+        </div>
+        <div id="signup-form">
+          <form asp-controller="Account" asp-action="Register" method="post">
+            <div class="mb-3">
+              <label for="registerName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="registerName" name="Name" required />
+            </div>
+            <div class="mb-3">
+              <label for="registerEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="registerEmail" name="Email" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          </form>
+        </div>
+        <div id="login-form" style="display:none;">
+          <form asp-controller="Account" asp-action="Login" method="post">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="loginEmail" name="email" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var showSignup = document.getElementById('show-signup');
+    var showLogin = document.getElementById('show-login');
+    var signupForm = document.getElementById('signup-form');
+    var loginForm = document.getElementById('login-form');
+    if (showSignup && showLogin && signupForm && loginForm) {
+      showSignup.addEventListener('click', function() {
+        showSignup.classList.add('active');
+        showLogin.classList.remove('active');
+        signupForm.style.display = '';
+        loginForm.style.display = 'none';
+      });
+      showLogin.addEventListener('click', function() {
+        showLogin.classList.add('active');
+        showSignup.classList.remove('active');
+        signupForm.style.display = 'none';
+        loginForm.style.display = '';
+      });
+    }
+    // If modal is triggered for login, show login form only
+    window.showLoginModal = function() {
+      var modal = new bootstrap.Modal(document.getElementById('authModal'));
+      showLogin.click();
+      modal.show();
+    };
+    window.showSignupModal = function() {
+      var modal = new bootstrap.Modal(document.getElementById('authModal'));
+      showSignup.click();
+      modal.show();
+    };
+  });
+</script>
+<style>
+  #authModal .modal-content {
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+  }
+  #authModal .btn.active {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+  }
+  #authModal .btn {
+    min-width: 100px;
+  }
+</style>

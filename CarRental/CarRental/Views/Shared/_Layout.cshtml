@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - CarRental</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/CarRental.styles.css" asp-append-version="true"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarRental</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
+                    </li>
+                    @if (ViewBag.IsAdmin == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    @if (ViewBag.UserName != null)
+                    {
+                        <div id="user-avatar" data-bs-toggle="tooltip" title="@ViewBag.UserName (@ViewBag.UserEmail)" class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-5" style="width:40px;height:40px;cursor:pointer;">
+                            @ViewBag.UserInitials
+                        </div>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="ms-2">
+                            <button type="submit" class="btn btn-link">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#authModal">Sign Up</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal" onclick="document.getElementById('login-tab').click();">Login</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+@await Html.PartialAsync("_AuthModal")
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2025 - CarRental - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+<script>
+    // Ensure correct tab is shown when Login button is clicked
+    document.addEventListener('DOMContentLoaded', function() {
+        var loginBtn = document.querySelector('button[data-bs-target="#authModal"][onclick]');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function() {
+                setTimeout(function() {
+                    document.getElementById('login-tab').click();
+                }, 200);
+            });
+        }
+    });
+
+    // Enable Bootstrap tooltip for avatar
+    document.addEventListener('DOMContentLoaded', function() {
+        var avatar = document.getElementById('user-avatar');
+        if (avatar) {
+            new bootstrap.Tooltip(avatar);
+        }
+    });
+</script>
+</body>
+</html>

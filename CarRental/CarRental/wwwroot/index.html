@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Dealer Showcase</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+    <h1>Available Cars</h1>
+    <div id="cars"></div>
+    <h2>Submit Inquiry</h2>
+    <form id="inquiryForm">
+        <input type="text" id="userName" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="number" id="carId" placeholder="Car ID" required />
+        <textarea id="message" placeholder="Message"></textarea>
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        fetch('/api/cars')
+            .then(res => res.json())
+            .then(cars => {
+                document.getElementById('cars').innerHTML = cars.map(car =>
+                    `<div style='border:1px solid #ccc;margin:10px;padding:10px;'>
+                        <img src="${car.imageUrl}" width="200" alt="Car Image"/>
+                        <h3>${car.make} ${car.model} (${car.year})</h3>
+                        <p>Price: $${car.price}</p>
+                        <p>ID: ${car.id}</p>
+                    </div>`
+                ).join('');
+            });
+
+        document.getElementById('inquiryForm').onsubmit = function(e) {
+            e.preventDefault();
+            fetch('/api/inquiries', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userName: document.getElementById('userName').value,
+                    email: document.getElementById('email').value,
+                    carId: parseInt(document.getElementById('carId').value),
+                    message: document.getElementById('message').value
+                })
+            })
+            .then(res => res.json())
+            .then(() => alert('Inquiry submitted!'));
+        };
+    </script>
+</body>
+</html>
+
