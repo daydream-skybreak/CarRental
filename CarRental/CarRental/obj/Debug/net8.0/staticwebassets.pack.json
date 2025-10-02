@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\HP\\Desktop\\personal_stuff\\CarRental\\CarRental\\CarRental\\wwwroot\\images\\ford_mustang.jpeg",
+      "PackagePath": "staticwebassets\\images\\ford_mustang.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\HP\\Desktop\\personal_stuff\\CarRental\\CarRental\\CarRental\\wwwroot\\images\\honda_civic.jpeg",
+      "PackagePath": "staticwebassets\\images\\honda_civic.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\HP\\Desktop\\personal_stuff\\CarRental\\CarRental\\CarRental\\wwwroot\\images\\toyota_camri.jpeg",
+      "PackagePath": "staticwebassets\\images\\toyota_camri.jpeg"
+    },
+    {
       "Id": "C:\\Users\\HP\\Desktop\\personal_stuff\\CarRental\\CarRental\\CarRental\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },

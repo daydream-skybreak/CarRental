@@ -6,8 +6,8 @@ public class CarModel
     public string Make { get; set; }
     public string Model { get; set; }
     public int Year { get; set; }
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
     public decimal Price { get; set; }
-    public int AdminId { get; set; } // User who uploaded the car
-    public UserModel Admin { get; set; }
+    public int? AdminId { get; set; } // Already nullable
+    public UserModel? Admin { get; set; } // Already nullable
 }

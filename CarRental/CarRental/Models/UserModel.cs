@@ -14,7 +14,7 @@ namespace CarRental.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
-        public ICollection<CarModel> Cars { get; set; }
-        public ICollection<InquiresModel> Inquiries { get; set; }
+        public ICollection<CarModel>? Cars { get; set; }
+        public ICollection<InquiresModel>? Inquiries { get; set; }
     }
 }

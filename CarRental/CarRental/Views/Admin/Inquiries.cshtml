@@ -10,6 +10,7 @@
             <th>User Name</th>
             <th>Email</th>
             <th>Message</th>
+            <th>Car Name</th>
             <th>Car Id</th>
             <th>User Id</th>
         </tr>
@@ -24,6 +25,7 @@
                 <td>@inquiry.User?.Name</td>
                 <td>@inquiry.User?.Email</td>
                 <td>@inquiry.Message</td>
+                <td>@(inquiry.Car != null ? $"{inquiry.Car.Make} {inquiry.Car.Model}" : "-")</td>
                 <td>@inquiry.CarId</td>
                 <td>@inquiry.UserId</td>
             </tr>

@@ -1,0 +1,41 @@
+﻿@model CarRental.Models.CarModel
+@{
+    ViewData["Title"] = $"{Model.Make} {Model.Model} Details";
+}
+@if (TempData["InquirySuccess"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["InquirySuccess"]
+    </div>
+}
+@if (TempData["InquiryError"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["InquiryError"]
+    </div>
+}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Make @Model.Model" style="object-fit:cover; height:100%" />
+            <div class="card-body">
+                <h3 class="card-title">@Model.Make @Model.Model</h3>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item"><strong>Year:</strong> @Model.Year</li>
+                    <li class="list-group-item"><strong>Price per day:</strong> $@Model.Price</li>
+                    <li class="list-group-item"><strong>Added by:</strong> @Model.Admin?.Name</li>
+                </ul>
+                <h5>Send an Inquiry</h5>
+                <form asp-controller="Inquiries" asp-action="Create" method="post">
+                    <input type="hidden" name="CarId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label for="Message" class="form-label">Message</label>
+                        <textarea name="Message" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

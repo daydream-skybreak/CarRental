@@ -11,7 +11,7 @@ namespace CarRental.Controllers
     {
         private readonly AppDbContext _context;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context)  : base(context)
         {
             _context = context;
         }
@@ -33,12 +33,19 @@ namespace CarRental.Controllers
                 HttpContext.Session.SetInt32("UserId", model.Id);
                 return RedirectToAction("Index", "Home");
             }
-            return View(model);
+            // Collect ModelState errors for debugging
+            var errors = string.Join("; ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            TempData["RegisterError"] = $"Signup didn't go as planned. {errors}";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult Login()
         {
+            if (TempData["LoginError"] != null)
+            {
+                ViewBag.LoginError = TempData["LoginError"];
+            }
             return View();
         }
 
@@ -52,8 +59,8 @@ namespace CarRental.Controllers
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Invalid email or password.");
-            return View();
+            TempData["LoginError"] = "Invalid email or password.";
+            return RedirectToAction("Login");
         }
 
         public IActionResult Logout()

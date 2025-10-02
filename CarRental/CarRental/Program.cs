@@ -7,12 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 
 // Build PostgreSQL connection string from environment variables
-string? dbUser = Environment.GetEnvironmentVariable("DB_USER");
-string? dbEmail = Environment.GetEnvironmentVariable("DB_EMAIL"); // Not used in connection string, but available
-string? dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-string? dbName = Environment.GetEnvironmentVariable("DB_NAME");
-string? dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-string dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
 
 string postgresConnection = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 
@@ -20,7 +19,13 @@ builder.Configuration["ConnectionStrings:DefaultConnection"] = postgresConnectio
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+    {
+        options.IdleTimeout = TimeSpan.FromHours(1);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    }
+    );
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
@@ -45,5 +50,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
+    app.Run();

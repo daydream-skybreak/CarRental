@@ -20,16 +20,19 @@ namespace CarRental.Controllers
             if (userId.HasValue && _context != null)
             {
                 var user = _context.Users.FirstOrDefault(u => u.Id == userId.Value);
+                Console.WriteLine(user.Name);
                 if (user != null)
                 {
                     ViewBag.UserName = user.Name;
                     ViewBag.UserInitials = string.Join("", user.Name.Split(' ').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s[0])).ToUpper();
+                    ViewBag.UserEmail = user.Email;
                     ViewBag.IsAdmin = user.IsAdmin;
                 }
                 else
                 {
                     ViewBag.UserName = null;
                     ViewBag.UserInitials = null;
+                    ViewBag.UserEmail = null;
                     ViewBag.IsAdmin = false;
                 }
             }
@@ -37,6 +40,7 @@ namespace CarRental.Controllers
             {
                 ViewBag.UserName = null;
                 ViewBag.UserInitials = null;
+                ViewBag.UserEmail = null;
                 ViewBag.IsAdmin = false;
             }
             base.OnActionExecuting(context);

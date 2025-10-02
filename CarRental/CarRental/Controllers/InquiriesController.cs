@@ -7,38 +7,61 @@ using System.Linq;
 
 namespace CarRental.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class InquiriesController : ControllerBase
+    public class InquiriesController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public InquiriesController(AppDbContext context)
+        public InquiriesController(AppDbContext context):  base(context)
         {
             _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<InquiresModel> Get()
+        // List all inquiries
+        public IActionResult Index()
         {
-            return _context.Inquiries.Include(i => i.User).Include(i => i.Car).ToList();
+            var inquiries = _context.Inquiries.Include(i => i.User).Include(i => i.Car).ToList();
+            return View(inquiries);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] InquiresModel inquiry)
+        // View details of a single inquiry
+        public IActionResult Details(int id)
         {
-            // Ensure the user and car exist
-            var user = _context.Users.Find(inquiry.UserId);
-            var car = _context.Cars.Find(inquiry.CarId);
-            if (user == null || car == null)
+            var inquiry = _context.Inquiries.Include(i => i.User).Include(i => i.Car).FirstOrDefault(i => i.Id == id);
+            if (inquiry == null)
+                return NotFound();
+            return View(inquiry);
+        }
+
+        // Show form to create a new inquiry
+        [HttpGet]
+        public IActionResult Create(int carId)
+        {
+            ViewBag.CarId = carId;
+            return View();
+        }
+
+        // Handle form submission to create a new inquiry
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(int CarId, string Message)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
-                return BadRequest("User or Car not found.");
+                TempData["InquiryError"] = "You must be logged in to send an inquiry.";
+                return RedirectToAction("Details", "Cars", new { id = CarId });
             }
-            inquiry.User = user;
-            inquiry.Car = car;
+            var inquiry = new InquiresModel
+            {
+                CarId = CarId,
+                UserId = userId.Value,
+                Message = Message
+            };
             _context.Inquiries.Add(inquiry);
             _context.SaveChanges();
-            return Ok(inquiry);
+            TempData["InquirySuccess"] = "Your inquiry has been sent!";
+            return RedirectToAction("Details", "Cars", new { id = CarId });
         }
     }
 }
+                                                                                                                                                                                                                                                                                                                                                
