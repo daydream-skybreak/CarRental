@@ -70,7 +70,6 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 <script>
-    // Ensure correct tab is shown when Login button is clicked
     document.addEventListener('DOMContentLoaded', function() {
         var loginBtn = document.querySelector('button[data-bs-target="#authModal"][onclick]');
         if (loginBtn) {
@@ -82,7 +81,6 @@
         }
     });
 
-    // Enable Bootstrap tooltip for avatar
     document.addEventListener('DOMContentLoaded', function() {
         var avatar = document.getElementById('user-avatar');
         if (avatar) {

@@ -16,14 +16,12 @@ namespace CarRental.Controllers
             _context = context;
         }
 
-        // List all inquiries
         public IActionResult Index()
         {
             var inquiries = _context.Inquiries.Include(i => i.User).Include(i => i.Car).ToList();
             return View(inquiries);
         }
 
-        // View details of a single inquiry
         public IActionResult Details(int id)
         {
             var inquiry = _context.Inquiries.Include(i => i.User).Include(i => i.Car).FirstOrDefault(i => i.Id == id);
@@ -32,7 +30,6 @@ namespace CarRental.Controllers
             return View(inquiry);
         }
 
-        // Show form to create a new inquiry
         [HttpGet]
         public IActionResult Create(int carId)
         {
@@ -40,7 +37,6 @@ namespace CarRental.Controllers
             return View();
         }
 
-        // Handle form submission to create a new inquiry
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(int CarId, string Message)

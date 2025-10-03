@@ -33,7 +33,6 @@ namespace CarRental.Controllers
                 HttpContext.Session.SetInt32("UserId", model.Id);
                 return RedirectToAction("Index", "Home");
             }
-            // Collect ModelState errors for debugging
             var errors = string.Join("; ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             TempData["RegisterError"] = $"Signup didn't go as planned. {errors}";
             return RedirectToAction("Index", "Home");

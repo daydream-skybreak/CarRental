@@ -8,6 +8,6 @@ public class CarModel
     public int Year { get; set; }
     public string? ImageUrl { get; set; }
     public decimal Price { get; set; }
-    public int? AdminId { get; set; } // Already nullable
-    public UserModel? Admin { get; set; } // Already nullable
+    public int? AdminId { get; set; }
+    public UserModel? Admin { get; set; }
 }

@@ -8,7 +8,6 @@ namespace CarRental.Controllers
     [Route("api/[controller]")]
     public class CarsApiController : ControllerBase
     {
-        // Shared static list for both API and view controllers
         public static List<CarModel> cars = new();
 
         [HttpGet]

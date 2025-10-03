@@ -16,20 +16,17 @@ namespace CarRental.Controllers
             _context = context;
         }
 
-        // View: List all cars
         public IActionResult Index()
         {
             var cars = _context.Cars.Include(c => c.Admin).ToList();
             return View(cars);
         }
 
-        // View: Show form to create a new car
         public IActionResult Create()
         {
             return View();
         }
 
-        // View: Handle form submission to create a new car
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CarModel car, IFormFile imageFile)
@@ -56,7 +53,6 @@ namespace CarRental.Controllers
                     ModelState.AddModelError("ImageFile", "Please upload an image file.");
                     return View(car);
                 }
-                // Validate file type
                 var permittedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" };
                 var ext = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
                 if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
@@ -64,7 +60,6 @@ namespace CarRental.Controllers
                     ModelState.AddModelError("ImageFile", "Only image files are allowed.");
                     return View(car);
                 }
-                // Save image
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "cars");
                 if (!Directory.Exists(uploadsFolder))
                     Directory.CreateDirectory(uploadsFolder);
@@ -83,7 +78,6 @@ namespace CarRental.Controllers
             return View(car);
         }
 
-        // View: Show car details and allow inquiries
         public IActionResult Details(int id)
         {
             var car = _context.Cars.Include(c => c.Admin).FirstOrDefault(c => c.Id == id);
